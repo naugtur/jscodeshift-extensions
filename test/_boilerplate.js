@@ -1,23 +1,19 @@
-import test from "ava";
-import jscodeshift from "jscodeshift";
-import testCodemod from "jscodeshift-ava-tester";
-import { installExtensions } from "../index.js";
+import test from 'ava'
+import jscodeshift from 'jscodeshift'
+import testCodemod from 'jscodeshift-ava-tester'
+import { installExtensions } from '../index.js'
 
-installExtensions(jscodeshift);
+installExtensions(jscodeshift)
 
-export function setup({ title, transform }) {
-    const drawTitle = (text) => `+-------------------
-| ${title}
-+-------------------
-${text}
---------------------`
+export function setup ({ title, transform, testCases }) {
+  const addTitle = (text) => `${title}: ${text}`
   const { testChanged, testUnchanged } = testCodemod(
     jscodeshift,
     test,
     transform
-  );
-  return {
-    testChanged: (a, b) => testChanged(drawTitle(a), a, b),
-    testUnchanged: (a) => testUnchanged(drawTitle(a), a),
-  };
+  )
+  return testCases({
+    testChanged: (a, b) => testChanged(addTitle(a), a, b),
+    testUnchanged: (a) => testUnchanged(addTitle(a), a)
+  })
 }

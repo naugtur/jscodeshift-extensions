@@ -1,10 +1,11 @@
 import { setup } from './_boilerplate.js'
 
-const { testChanged, testUnchanged } = setup({
+setup({
   title: 'smoke test',
   transform: ({ source }, { jscodeshift: j }) =>
-    j(source).find(j.Identifier).replaceWith('b').toSource()
+    j(source).find(j.Identifier).replaceWith('b').toSource(),
+  testCases: ({ testChanged, testUnchanged }) => {
+    testChanged('var a = 2;', 'var b = 2;')
+    testUnchanged('(()=>{})()')
+  }
 })
-
-testChanged('var a = 2;', 'var b = 2;')
-testUnchanged('(()=>{})()')
