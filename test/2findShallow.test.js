@@ -3,7 +3,7 @@ import { setup } from './_boilerplate.js'
 setup({
   title: 'shallow default',
   transform: ({ source }, { jscodeshift: j }) =>
-    j(source).findShallow(j.Identifier).replaceWith('b').toSource(),
+    j(source).findShallow(j.Identifier).replaceWith('MARK').toSource(),
   testCases: ({ testChanged, testUnchanged }) => {
     testChanged(
       `a.then(() => {
@@ -18,11 +18,11 @@ setup({
         };
       });
 `,
-      `b.b(() => {
+      `MARK.MARK(() => {
         return {
           result: getResult(that)
         };
-      }).b(() => {
+      }).MARK(() => {
         return {
           result: getResult(() => {
             return something;
@@ -58,7 +58,7 @@ setup({
             ()=>{
               ()=>{
                 ()=>{
-                  return b;
+                  return MARK;
                 }
               }
             }
@@ -74,7 +74,7 @@ setup({
 setup({
   title: 'shallow with depth param',
   transform: ({ source }, { jscodeshift: j }) =>
-    j(source).findShallow(j.Identifier, null, 2).replaceWith('b').toSource(),
+    j(source).findShallow(j.Identifier, null, 2).replaceWith('MARK').toSource(),
   testCases: ({ testChanged, testUnchanged }) => {
     testChanged(
       `
@@ -87,7 +87,7 @@ setup({
       `
     ()=>{
       ()=>{
-        return b;
+        return MARK;
       } 
     }
     `
@@ -108,13 +108,13 @@ setup({
     }
 `,
       `() => {
-      b.b(() => {
+      MARK.MARK(() => {
         return {
-          b: b(b)
+          MARK: MARK(MARK)
         };
-      }).b(() => {
+      }).MARK(() => {
         return {
-          b: b(() => {
+          MARK: MARK(() => {
             return something;
           })
         };

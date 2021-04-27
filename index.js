@@ -12,7 +12,7 @@ const extensions = {
    * @return {import('jscodeshift').Collection}
    * @this {import('jscodeshift').Collection}
    */
-  closestButOnlyVia (type, viaTypes) {
+  closestOnlyVia (type, viaTypes) {
     return this.map((path) => {
       let parent = path.parent
       while (parent && !type.check(parent.value)) {
